@@ -1,90 +1,133 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+
 export default function TemplatesPage() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
   const templates = [
     {
-      id: 1,
-      name: "Classic Professional",
-      description: "Clean and traditional design perfect for corporate positions",
-      category: "Professional",
-      preview: "/api/placeholder/400/500"
+      id: 'classic',
+      name: 'Classic Professional',
+      description: 'Clean and traditional design perfect for corporate positions and conservative industries',
+      category: 'Professional',
+      preview: 'classic',
+      color: 'bg-gray-600',
+      features: ['ATS Optimized', 'Traditional Layout', 'Corporate Ready'],
     },
     {
-      id: 2,
-      name: "Modern Minimalist",
-      description: "Contemporary design with clean lines and modern typography",
-      category: "Modern",
-      preview: "/api/placeholder/400/500"
+      id: 'modern',
+      name: 'Modern Minimalist',
+      description: 'Contemporary design with clean lines and modern typography for forward-thinking professionals',
+      category: 'Modern',
+      preview: 'modern',
+      color: 'bg-blue-600',
+      features: ['Clean Design', 'Modern Typography', 'Versatile'],
     },
     {
-      id: 3,
-      name: "Creative Portfolio",
-      description: "Bold design ideal for creative professionals and designers",
-      category: "Creative",
-      preview: "/api/placeholder/400/500"
+      id: 'creative',
+      name: 'Creative Portfolio',
+      description: 'Bold design ideal for creative professionals, designers, and artists',
+      category: 'Creative',
+      preview: 'creative',
+      color: 'bg-purple-600',
+      features: ['Eye-Catching', 'Colorful', 'Creative Fields'],
     },
     {
-      id: 4,
-      name: "Tech Specialist",
-      description: "Technical layout optimized for software engineers and developers",
-      category: "Technical",
-      preview: "/api/placeholder/400/500"
+      id: 'tech',
+      name: 'Tech Specialist',
+      description: 'Technical layout optimized for software engineers, developers, and tech professionals',
+      category: 'Technical',
+      preview: 'tech',
+      color: 'bg-green-600',
+      features: ['Tech Focused', 'Code-Inspired', 'Developer Friendly'],
     },
-    {
-      id: 5,
-      name: "Executive Leadership",
-      description: "Sophisticated design for senior management and executive roles",
-      category: "Executive",
-      preview: "/api/placeholder/400/500"
-    },
-    {
-      id: 6,
-      name: "Academic Scholar",
-      description: "Traditional format perfect for academic and research positions",
-      category: "Academic",
-      preview: "/api/placeholder/400/500"
-    }
   ];
 
+  const categories = ['all', 'Professional', 'Modern', 'Creative', 'Technical'];
+
+  const filteredTemplates = selectedCategory === 'all'
+    ? templates
+    : templates.filter(t => t.category === selectedCategory);
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        {/* Header */}
+        <div className="text-center mb-12 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Choose Your Template
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Select from our collection of professionally designed resume templates. Each template is optimized for different industries and career levels.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {templates.map((template) => (
-            <div key={template.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-[4/5] bg-gray-200 flex items-center justify-center">
-                <div className="text-gray-500 text-center">
-                  <div className="w-32 h-40 bg-gray-300 rounded mx-auto mb-2"></div>
-                  <p className="text-sm">Template Preview</p>
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8 animate-slide-up">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === category
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+              }`}
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* Templates Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {filteredTemplates.map((template, index) => (
+            <div
+              key={template.id}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              {/* Preview Area */}
+              <div className={`${template.color} h-64 flex items-center justify-center relative overflow-hidden`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent"></div>
+                <div className="relative z-10 text-center text-white p-6">
+                  <div className="w-32 h-40 bg-white/20 backdrop-blur-sm rounded-lg mx-auto mb-4 flex items-center justify-center border-2 border-white/30">
+                    <div className="text-4xl font-bold opacity-80">{template.name.charAt(0)}</div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">{template.name}</h3>
+                  <p className="text-sm opacity-90">{template.category}</p>
                 </div>
               </div>
               
+              {/* Template Info */}
               <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {template.name}
-                  </h3>
-                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                    {template.category}
-                  </span>
-                </div>
-                
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-4 min-h-[3rem]">
                   {template.description}
                 </p>
                 
-                <div className="flex gap-2">
-                  <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                {/* Features */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {template.features.map((feature, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium"
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Actions */}
+                <div className="flex gap-3">
+                  <Link
+                    href={`/generate?template=${template.id}`}
+                    className={`flex-1 ${template.color} hover:opacity-90 text-white text-center py-3 px-4 rounded-lg transition-all duration-200 font-semibold shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]`}
+                  >
                     Use Template
-                  </button>
-                  <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition-colors">
+                  </Link>
+                  <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-4 rounded-lg transition-all duration-200 font-semibold">
                     Preview
                   </button>
                 </div>
@@ -93,13 +136,27 @@ export default function TemplatesPage() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">
-            Don't see what you're looking for? More templates coming soon!
-          </p>
-          <button className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition-colors">
-            Request Template
-          </button>
+        {/* Call to Action */}
+        <div className="text-center mt-16 animate-fade-in">
+          <div className="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Don't see what you're looking for?
+            </h2>
+            <p className="text-gray-600 mb-6">
+              More templates are coming soon! In the meantime, our AI can help customize any template to your needs.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/generate"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Start Building
+              </Link>
+              <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-8 py-3 rounded-lg transition-all duration-200 font-semibold">
+                Request Template
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

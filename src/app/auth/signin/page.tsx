@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase-client';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { trackLogin } from '@/lib/analytics';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
@@ -36,12 +37,14 @@ export default function SignInPage() {
     if (error) {
       setMessage(error.message);
     } else {
+      trackLogin('email');
       router.push('/dashboard');
     }
     setLoading(false);
   };
 
   const handleGoogleSignIn = async () => {
+    trackLogin('google');
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase-client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { trackSignup } from '@/lib/analytics';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -36,12 +37,14 @@ export default function SignUpPage() {
     if (error) {
       setMessage(error.message);
     } else {
+      trackSignup('email');
       setMessage('Check your email for the confirmation link!');
     }
     setLoading(false);
   };
 
   const handleGoogleSignUp = async () => {
+    trackSignup('google');
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
