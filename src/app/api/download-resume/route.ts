@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
       // Name
       pdf.setFontSize(style.headerFontSize);
       pdf.setTextColor(style.headerColor[0], style.headerColor[1], style.headerColor[2]);
-      pdf.setFont(undefined, 'bold');
+      pdf.setFont('helvetica', 'bold');
       pdf.text(name, margin, yPosition);
       yPosition += style.lineHeight + 2;
       
@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
       const contactInfo = [email, phone, location].filter(Boolean).join(' • ');
       pdf.setFontSize(style.bodyFontSize - 1);
       pdf.setTextColor(0, 0, 0);
-      pdf.setFont(undefined, 'normal');
+      pdf.setFont('helvetica', 'normal');
       pdf.text(contactInfo, margin, yPosition);
       yPosition += style.lineHeight;
       
@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
           
           // Position and Company on same line
           pdf.setFontSize(style.bodyFontSize);
-          pdf.setFont(undefined, 'bold');
+          pdf.setFont('helvetica', 'bold');
           pdf.setTextColor(0, 0, 0);
           const positionText = `${exp.position}`;
           pdf.text(positionText, margin, yPosition);
@@ -197,7 +197,7 @@ export async function POST(request: NextRequest) {
           // Company and duration on right side
           const companyDuration = `${exp.company} | ${exp.duration || ''}`;
           const companyWidth = pdf.getTextWidth(companyDuration);
-          pdf.setFont(undefined, 'normal');
+          pdf.setFont('helvetica', 'normal');
           pdf.text(companyDuration, pageWidth - margin - companyWidth, yPosition);
           yPosition += style.lineHeight + 1;
           
@@ -237,7 +237,7 @@ export async function POST(request: NextRequest) {
           
           const eduText = `${edu.degree} in ${edu.fieldOfStudy}, ${edu.institution}, ${edu.graduationDate}`;
           pdf.setFontSize(style.bodyFontSize);
-          pdf.setFont(undefined, 'bold');
+          pdf.setFont('helvetica', 'bold');
           pdf.text(eduText, margin, yPosition);
           yPosition += style.lineHeight + 1;
         });
@@ -253,7 +253,7 @@ export async function POST(request: NextRequest) {
           skillLines.slice(0, 2).forEach((line: string) => {
             if (checkSpace(style.lineHeight)) {
               pdf.setFontSize(style.bodyFontSize);
-              pdf.setFont(undefined, 'normal');
+              pdf.setFont('helvetica', 'normal');
               pdf.text(line, margin, yPosition);
               yPosition += style.lineHeight;
             }
@@ -269,13 +269,13 @@ export async function POST(request: NextRequest) {
           if (!checkSpace(style.lineHeight * 4)) return;
           
           pdf.setFontSize(style.bodyFontSize);
-          pdf.setFont(undefined, 'bold');
+          pdf.setFont('helvetica', 'bold');
           pdf.text(project.name, margin, yPosition);
           yPosition += style.lineHeight;
           
           if (project.description) {
             const descLines = pdf.splitTextToSize(project.description, pageWidth - 2 * margin);
-            pdf.setFont(undefined, 'normal');
+            pdf.setFont('helvetica', 'normal');
             pdf.setFontSize(style.bodyFontSize - 1);
             descLines.slice(0, 2).forEach((line: string) => {
               if (checkSpace(style.lineHeight)) {
@@ -309,10 +309,9 @@ export async function POST(request: NextRequest) {
     const duration = Date.now() - startTime;
     console.error('Error generating PDF:', error);
     
-    logError('PDF generation failed', error, {
-      duration,
-      userId: user?.id,
-    });
+        logError('PDF generation failed', error, {
+          duration,
+        });
     
     trackAPICall('/api/download-resume', 'POST', duration, 500);
     

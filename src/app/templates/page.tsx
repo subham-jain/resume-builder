@@ -140,7 +140,7 @@ export default function TemplatesPage() {
         <div className="text-center mt-16 animate-fade-in">
           <div className="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Don't see what you're looking for?
+              Don&apos;t see what you&apos;re looking for?
             </h2>
             <p className="text-gray-600 mb-6">
               More templates are coming soon! In the meantime, our AI can help customize any template to your needs.

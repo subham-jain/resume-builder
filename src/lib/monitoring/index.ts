@@ -8,13 +8,12 @@ export * from './kibana';
 import { trackDynatraceEvent, trackError as dtTrackError } from './dynatrace';
 import { 
   logError as kibanaLogError, 
-  logInfo as kibanaLogInfo, 
-  logWarn as kibanaLogWarn, 
-  logUserAction as kibanaLogUserAction 
+  logUserAction as kibanaLogUserAction,
+  logAPICall as kibanaLogAPICall
 } from './kibana';
 
 // Combined error tracking
-export function trackError(error: Error, context?: Record<string, any>, userId?: string) {
+export function trackError(error: Error, context?: Record<string, unknown>, userId?: string) {
   // Track in Dynatrace
   dtTrackError(error, context);
   
@@ -23,21 +22,29 @@ export function trackError(error: Error, context?: Record<string, any>, userId?:
 }
 
 // Combined user action tracking
-export function trackUserAction(action: string, userId?: string, metadata?: Record<string, any>) {
+export function trackUserAction(action: string, userId?: string, metadata?: Record<string, unknown>) {
   // Track in Dynatrace
   trackDynatraceEvent(`user_action_${action}`, { userId, ...metadata });
   
   // Log to Kibana
   kibanaLogUserAction(action, userId, metadata);
 }
+export function trackAPICall(endpoint: string, method: string, duration: number, statusCode: number) {
+  // Track in Dynatrace
+  trackDynatraceEvent(`api_call_${endpoint}`, { method, duration, statusCode });
+  
+  // Log to Kibana
+  kibanaLogAPICall(endpoint, method, duration, statusCode);
+}
 
-// Re-export Kibana logging functions with unified interface
+// Re-export Kibana logging functions directly
 export { 
-  kibanaLogInfo as logInfo,
-  kibanaLogWarn as logWarn,
-  kibanaLogError as logError,
+  logInfo,
+  logWarn,
+  logError,
   logDebug,
   logPerformance,
-  logUserAction as logUserActionToKibana,
+  logUserAction,
 } from './kibana';
+
 

@@ -67,7 +67,7 @@ export default function CheckoutPage() {
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Free Plan Selected</h1>
           <p className="text-gray-600 mb-6">
-            The free plan doesn't require payment. You can start using it right away!
+            The free plan doesn&apos;t require payment. You can start using it right away!
           </p>
           <Link
             href="/generate"
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
           <>
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Checkout</h1>
             <p className="text-gray-600 mb-6">
-              If you weren't redirected automatically, please check your connection and try again.
+              If you weren&apos;t redirected automatically, please check your connection and try again.
             </p>
             <Link
               href="/pricing"

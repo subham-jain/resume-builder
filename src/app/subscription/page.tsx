@@ -191,7 +191,7 @@ export default function SubscriptionPage() {
           {plan === 'free' && (
             <div className="border-t border-gray-200 pt-6">
               <p className="text-gray-600 mb-4">
-                You're currently on the free plan. Upgrade to unlock more features!
+                You&apos;re currently on the free plan. Upgrade to unlock more features!
               </p>
               <Link
                 href="/pricing"

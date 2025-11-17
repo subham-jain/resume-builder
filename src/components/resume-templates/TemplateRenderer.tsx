@@ -435,7 +435,7 @@ function TechTemplate({ resume }: { resume: GeneratedResume }) {
       {/* Summary */}
       {resume.summary && (
         <div className="mb-8 bg-gray-800 p-4 rounded border border-gray-700">
-          <h2 className="text-green-400 font-mono font-bold mb-2">// SUMMARY</h2>
+          <h2 className="text-green-400 font-mono font-bold mb-2">{'// SUMMARY'}</h2>
           <p className="text-gray-300">{resume.summary}</p>
         </div>
       )}
@@ -443,7 +443,7 @@ function TechTemplate({ resume }: { resume: GeneratedResume }) {
       {/* Skills - Prominent for Tech */}
       {resume.skills && resume.skills.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">// SKILLS</h2>
+          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">{'// SKILLS'}</h2>
           <div className="flex flex-wrap gap-2">
             {resume.skills.map((skill, idx) => (
               <span
@@ -460,7 +460,7 @@ function TechTemplate({ resume }: { resume: GeneratedResume }) {
       {/* Work Experience */}
       {resume.workExperience && resume.workExperience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">// EXPERIENCE</h2>
+          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">{'// EXPERIENCE'}</h2>
           <div className="space-y-5">
             {resume.workExperience.map((exp, idx) => (
               <div key={idx} className="bg-gray-800 p-4 rounded border border-gray-700">
@@ -491,7 +491,7 @@ function TechTemplate({ resume }: { resume: GeneratedResume }) {
       {/* Projects */}
       {resume.projects && resume.projects.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">// PROJECTS</h2>
+          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">{'// PROJECTS'}</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {resume.projects.map((project, idx) => (
               <div key={idx} className="bg-gray-800 p-4 rounded border border-gray-700">
@@ -518,7 +518,7 @@ function TechTemplate({ resume }: { resume: GeneratedResume }) {
       {/* Education */}
       {resume.education && resume.education.length > 0 && (
         <div>
-          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">// EDUCATION</h2>
+          <h2 className="text-green-400 font-mono font-bold mb-4 text-xl">{'// EDUCATION'}</h2>
           {resume.education.map((edu, idx) => (
             <div key={idx} className="bg-gray-800 p-4 rounded border border-gray-700 mb-3">
               <h3 className="text-white font-bold">{edu.degree}</h3>

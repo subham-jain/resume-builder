@@ -24,7 +24,7 @@ export default function AboutPage() {
             
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Why Choose Us?</h2>
             <p className="mb-6">
-              We understand that creating a professional resume can be challenging. That's why we've built a platform that combines powerful features with an intuitive interface. Our templates are carefully crafted to meet industry standards while allowing for personal customization.
+              We understand that creating a professional resume can be challenging. That&apos;s why we&apos;ve built a platform that combines powerful features with an intuitive interface. Our templates are carefully crafted to meet industry standards while allowing for personal customization.
             </p>
             
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Technology</h2>

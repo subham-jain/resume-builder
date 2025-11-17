@@ -1,6 +1,8 @@
 // Kibana/Elasticsearch monitoring integration
 // Add your Elasticsearch/Kibana credentials to .env.local when ready
 
+import { metadata } from "@/app/layout";
+
 interface KibanaConfig {
   elasticsearchUrl?: string;
   apiKey?: string;
@@ -206,6 +208,22 @@ export function logUserAction(action: string, userId?: string, metadata?: Record
       ...metadata,
       action,
       type: 'user_action',
+    },
+  });
+}
+export function logAPICall(endpoint: string, method: string, duration: number, statusCode: number) {
+  logToKibana({
+    timestamp: new Date().toISOString(),
+    level: 'info',
+    message: `API Call: ${endpoint}`,
+    service: 'resume-builder',
+    metadata: {
+      ...metadata,
+      endpoint,
+      method,
+      duration,
+      statusCode,
+      type: 'api_call',
     },
   });
 }

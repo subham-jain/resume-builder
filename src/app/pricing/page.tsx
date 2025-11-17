@@ -145,7 +145,7 @@ export default function PricingPage() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">What happens if I exceed my limit?</h3>
               <p className="text-gray-600 text-sm">
-                You'll be notified when you're close to your limit. Upgrade to continue creating resumes.
+                You&apos;ll be notified when you&apos;re close to your limit. Upgrade to continue creating resumes.
               </p>
             </div>
             <div>

@@ -69,7 +69,7 @@ export default function AdminPage() {
         .select('user_id')
         .order('created_at', { ascending: false });
 
-      const uniqueUsers = new Set(usersData?.map(r => r.user_id) || []);
+      const uniqueUsers = new Set(usersData?.map((r: { user_id: string }) => r.user_id) || []);
       
       // Get all resumes
       const { data: allResumes } = await supabase
@@ -84,28 +84,28 @@ export default function AdminPage() {
       const monthAgo = new Date(now.getFullYear(), now.getMonth(), 1);
 
       // Filter resumes by date
-      const resumesToday = allResumes?.filter(r => 
+      const resumesToday = allResumes?.filter((r: { created_at: string }) => 
         new Date(r.created_at) >= today
       ).length || 0;
 
-      const resumesThisWeek = allResumes?.filter(r => 
+      const resumesThisWeek = allResumes?.filter((r: { created_at: string }) => 
         new Date(r.created_at) >= weekAgo
       ).length || 0;
 
-      const resumesThisMonth = allResumes?.filter(r => 
+      const resumesThisMonth = allResumes?.filter((r: { created_at: string }) => 
         new Date(r.created_at) >= monthAgo
       ).length || 0;
 
       // Get active users (users who created resumes in last 7 days)
       const activeUserIds = new Set(
         allResumes
-          ?.filter(r => new Date(r.created_at) >= weekAgo)
-          .map(r => r.user_id) || []
+          ?.filter((r: { created_at: string }) => new Date(r.created_at) >= weekAgo)
+          .map((r: { user_id: string }) => r.user_id) || []
       );
 
       // Analyze templates (if stored in generated_resume)
       const templateCounts: Record<string, number> = {};
-      allResumes?.forEach(resume => {
+      allResumes?.forEach((_resume: { generated_resume?: any }) => {
         // Default to 'classic' if template info not available
         templateCounts['classic'] = (templateCounts['classic'] || 0) + 1;
       });
@@ -116,7 +116,7 @@ export default function AdminPage() {
         .select('tier');
 
       const tierCounts: Record<string, number> = { free: uniqueUsers.size };
-      subscriptions?.forEach(sub => {
+      subscriptions?.forEach((sub: { tier: string }) => {
         tierCounts[sub.tier] = (tierCounts[sub.tier] || 0) + 1;
         tierCounts.free = Math.max(0, tierCounts.free - 1);
       });

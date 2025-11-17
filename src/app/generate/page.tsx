@@ -18,7 +18,7 @@ import { analyzeATS, ATSMetrics as ATSMetricsType } from '@/lib/ats-analyzer';
 import { getUserTierClient } from '@/lib/subscription';
 import { getUserUsageClient } from '@/lib/usage-tracker';
 import { createClient } from '@/lib/supabase-client';
-import { trackResumeGeneration } from '@/lib/analytics';
+import { trackResumeGeneration, trackResumeDownload } from '@/lib/analytics';
 
 const formSchema = z.object({
   inputType: z.enum(['jobDescription', 'resumeText', 'upload']),
@@ -81,8 +81,8 @@ export default function GeneratePage() {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      inputType: 'jobDescription',
-      templateId: searchParams.get('template') || 'classic',
+      inputType: 'jobDescription' as const,
+      templateId: searchParams.get('template') ?? 'classic',
     },
   });
 
@@ -97,6 +97,37 @@ export default function GeneratePage() {
       setValue('templateId', templateParam);
     }
   }, [searchParams, setValue]);
+
+  // Load resume from sessionStorage if viewing
+  useEffect(() => {
+    const viewParam = searchParams.get('view');
+    if (viewParam === 'true') {
+      const storedResume = sessionStorage.getItem('viewResume');
+      if (storedResume) {
+        try {
+          const { resume, jobDescription: storedJobDesc } = JSON.parse(storedResume);
+          if (resume) {
+            setGeneratedResume(resume);
+            setJobDescription(storedJobDesc || '');
+            setCurrentStep(2); // Move to review step
+            // Calculate ATS metrics
+            try {
+              const metrics = analyzeATS(resume, storedJobDesc || '');
+              setAtsMetrics(metrics);
+            } catch (error) {
+              console.error('Error calculating ATS metrics:', error);
+            }
+            success('Resume loaded successfully');
+            // Clear sessionStorage after loading
+            sessionStorage.removeItem('viewResume');
+          }
+        } catch (error) {
+          console.error('Error loading resume from sessionStorage:', error);
+          showError('Failed to load resume');
+        }
+      }
+    }
+  }, [searchParams, success, showError]);
 
   // Load usage stats
   useEffect(() => {
@@ -801,7 +832,7 @@ export default function GeneratePage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-semibold text-green-900">Step 3: ATS Score Analysis</h3>
-                      <p className="text-sm text-green-700 mt-1">Check your resume's compatibility with Applicant Tracking Systems.</p>
+                      <p className="text-sm text-green-700 mt-1">Check your resume&apos;s compatibility with Applicant Tracking Systems.</p>
                     </div>
                     <button
                       onClick={() => setCurrentStep(2)}

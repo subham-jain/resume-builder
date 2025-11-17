@@ -85,7 +85,7 @@ export default function UsageLimit({ tier, currentUsage, feature, userEmail }: U
       {isAtLimit ? (
         <div className="flex items-center justify-between">
           <p className="text-sm text-red-700">
-            You've reached your monthly limit. Upgrade to continue creating resumes.
+            You&apos;ve reached your monthly limit. Upgrade to continue creating resumes.
           </p>
           <a
             href="/pricing"
@@ -96,7 +96,7 @@ export default function UsageLimit({ tier, currentUsage, feature, userEmail }: U
         </div>
       ) : isNearLimit ? (
         <p className="text-sm text-yellow-700">
-          You're running low on resumes this month ({usage.remaining} remaining).{' '}
+          You&apos;re running low on resumes this month ({usage.remaining} remaining).{' '}
           <a href="/pricing" className="font-semibold underline">
             Upgrade for more
           </a>

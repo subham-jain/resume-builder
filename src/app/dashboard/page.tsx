@@ -84,8 +84,16 @@ export default function DashboardPage() {
     }
   };
 
-  const handleView = (resume: ResumeRecord) => {
-    router.push(`/generate?resumeId=${resume.id}`);
+  const handleView = async (resume: ResumeRecord) => {
+    // Store resume data in sessionStorage and navigate to generate page
+    if (resume.generated_resume) {
+      sessionStorage.setItem('viewResume', JSON.stringify({
+        resume: resume.generated_resume,
+        resumeId: resume.id,
+        jobDescription: resume.job_description,
+      }));
+      router.push('/generate?view=true');
+    }
   };
 
   if (loading) {
@@ -195,7 +203,7 @@ export default function DashboardPage() {
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                 <h3 className="text-lg font-semibold mb-2">✨ {PRICING_PLANS[tier as keyof typeof PRICING_PLANS]?.name} Plan</h3>
                 <p className="text-sm opacity-90 mb-4">
-                  You're enjoying premium features!
+                  You&apos;re enjoying premium features!
                 </p>
                 <Link
                   href="/pricing"
