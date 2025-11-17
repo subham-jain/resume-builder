@@ -4,22 +4,6 @@ const nextConfig: NextConfig = {
   // Enable hot reload and fast refresh
   reactStrictMode: true,
   
-  // Enable instrumentation for monitoring
-  experimental: {
-    instrumentationHook: true,
-  },
-  
-  // Optimize package imports for faster hot reload
-  optimizePackageImports: [
-    '@google/generative-ai',
-    'react-hook-form',
-    '@supabase/supabase-js',
-    '@supabase/ssr',
-    'jspdf',
-    'mammoth',
-    'pdf-parse',
-  ],
-  
   // Turbopack configuration (moved from experimental)
   turbopack: {
     resolveAlias: {

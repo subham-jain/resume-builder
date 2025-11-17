@@ -199,6 +199,7 @@ export default function AdminPage() {
             <p className="text-gray-600">Loading analytics...</p>
           </div>
         ) : analytics ? (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {/* Total Users */}
             <div className="bg-white rounded-xl shadow-lg p-6">
@@ -328,6 +329,7 @@ export default function AdminPage() {
               ))}
             </div>
           </div>
+          </>
         ) : (
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
             <p className="text-gray-600">No analytics data available</p>
