@@ -1,10 +1,10 @@
 'use client';
 
-import { ATSMetrics, ATS_CATEGORIES } from '@/lib/ats-analyzer';
+import { ATSMetrics as ATSMetricsType, ATS_CATEGORIES } from '@/lib/ats-analyzer';
 import ATSInfoIcon from './ATSInfoIcon';
 
 interface ATSMetricsProps {
-  metrics: ATSMetrics;
+  metrics: ATSMetricsType;
 }
 
 export default function ATSMetrics({ metrics }: ATSMetricsProps) {

@@ -23,7 +23,7 @@ export default function AuthButton() {
     getUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      (event: string, session: any) => {
         setUser(session?.user ?? null);
         setLoading(false);
         if (event === 'SIGNED_OUT') {

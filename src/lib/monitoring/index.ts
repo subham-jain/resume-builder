@@ -29,12 +29,12 @@ export function trackUserAction(action: string, userId?: string, metadata?: Reco
   // Log to Kibana
   kibanaLogUserAction(action, userId, metadata);
 }
-export function trackAPICall(endpoint: string, method: string, duration: number, statusCode: number) {
+export function trackAPICall(endpoint: string, method: string, duration: number, statusCode: number, metadata?: Record<string, unknown>) {
   // Track in Dynatrace
   trackDynatraceEvent(`api_call_${endpoint}`, { method, duration, statusCode });
   
   // Log to Kibana
-  kibanaLogAPICall(endpoint, method, duration, statusCode);
+  kibanaLogAPICall(endpoint, method, duration, statusCode, metadata);
 }
 
 // Re-export Kibana logging functions directly

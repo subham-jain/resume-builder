@@ -1,12 +1,14 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/lib/supabase-client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { trackLogin } from '@/lib/analytics';
 
-export default function SignInPage() {
+function SignInContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -163,5 +165,25 @@ export default function SignInPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-md w-full space-y-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <h2 className="text-3xl font-extrabold text-gray-900">Loading...</h2>
+              <p className="mt-2 text-sm text-gray-600">Please wait while we load the sign in page.</p>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <SignInContent />
+    </Suspense>
   );
 }

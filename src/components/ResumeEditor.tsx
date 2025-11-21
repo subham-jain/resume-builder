@@ -17,7 +17,7 @@ export default function ResumeEditor({ resume, onUpdate, onCancel }: ResumeEdito
     setEditedResume(prev => ({
       ...prev,
       [section]: {
-        ...prev[section as keyof GeneratedResume],
+        ...(prev[section as keyof GeneratedResume] as object || {}),
         [field]: value,
       },
     }));

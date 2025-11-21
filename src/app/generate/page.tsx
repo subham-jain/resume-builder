@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+export const dynamic = 'force-dynamic';
+
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -19,6 +21,7 @@ import { getUserTierClient } from '@/lib/subscription';
 import { getUserUsageClient } from '@/lib/usage-tracker';
 import { createClient } from '@/lib/supabase-client';
 import { trackResumeGeneration, trackResumeDownload } from '@/lib/analytics';
+import { trackUserAction, trackError as monitorError } from '@/lib/monitoring';
 
 const formSchema = z.object({
   inputType: z.enum(['jobDescription', 'resumeText', 'upload']),
@@ -28,7 +31,7 @@ const formSchema = z.object({
   skills: z.string().optional(),
   education: z.string().optional(),
   targetRole: z.string().optional(),
-  templateId: z.string().default('classic'),
+  templateId: z.string(),
 }).refine((data) => {
   if (data.inputType === 'jobDescription') {
     return data.jobDescription && data.jobDescription.length >= 100;
@@ -51,7 +54,7 @@ const STEPS = [
   { id: 'download', label: 'Download', description: 'Get your PDF' },
 ];
 
-export default function GeneratePage() {
+function GenerateContent() {
   const searchParams = useSearchParams();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -82,7 +85,7 @@ export default function GeneratePage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       inputType: 'jobDescription' as const,
-      templateId: searchParams.get('template') ?? 'classic',
+      templateId: (searchParams.get('template') || 'classic') as string,
     },
   });
 
@@ -995,5 +998,25 @@ export default function GeneratePage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function GeneratePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Loading...</h1>
+              <p className="text-lg text-gray-600">Please wait while we load the resume generator.</p>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <GenerateContent />
+    </Suspense>
   );
 }
